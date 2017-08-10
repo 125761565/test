@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+          http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- 配置扫描的包,完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="com.test.*" />
+
+	<!-- 引入配置文件 -->
+	<context:property-placeholder location="classpath*:*.properties" />
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 连接数据库基本参数 -->
+		<property name="url" value="${db.url}"></property>
+		<property name="username" value="${db.user}"></property>
+		<property name="password" value="${db.password}"></property>
+		<!-- druid连接池加密 -->
+		<!-- <property name="filters" value="config"></property> <property name="connectionProperties" 
+			value="config.decrypt=true"></property> -->
+		<property name="driverClassName" value="${db.driver}"></property>
+		<!-- 初始化大小，最小，最大连接数 -->
+		<property name="initialSize" value="${db.initialPoolSize}"></property>
+		<property name="minIdle" value="${db.minPoolSize}"></property>
+		<property name="maxActive" value="${db.maxpoolSize}"></property>
+
+		<!-- 获取连接等待超时的时间 -->
+		<property name="maxWait" value="${db.checkoutTimeout}"></property>
+		<!-- 间隔检测时长,检测需要关闭的空闲连接，单位毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}"></property>
+		<!-- 一个连接在池中最小生存的时间，单位毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${db.minEvictableTimeMillis}"></property>
+
+		<!-- ?? -->
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+
+
+		<!-- 打开PSCache,并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="false"></property>
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20"></property>
+		<!-- 配置监控统计拦截的filters,去掉后监控界面sql无法统计 -->
+		<!-- <property name="filters" value="stat"/> -->
+	</bean>
+
+	<!-- hibernate+spring整合 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- hibernate相关属性配置 -->
+		<property name="hibernateProperties">
+			<value>
+				<!-- 设置方言 -->
+				hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+				<!-- 设置自动创建|更新|验证数据库表结构 -->
+				hibernate.hbm2ddl.auto=update
+				<!-- 是的在控制台显示sql -->
+				hibernate.show_sql=true
+				<!-- 是否格式化sql,优化显示 -->
+				hibernate.format_sql=true
+				<!-- 是否开启二级缓存 -->
+				hibernate.cache.use_second_level_cache=false
+				<!-- 是否开启查询缓存 -->
+				hibernate.cache.use_query_cache=false
+				<!-- 数据库批量查询最大数 -->
+				hibernate.jdbc.fetch_size=50
+				<!-- 数据库批量更新、添加、删除操作最大数 -->
+				hibernate.jdbc.batch_size=50
+				<!-- 是否自动提交事务 -->
+				<!--  hibernate.connection.autocommit=false  -->
+				<!-- 指定hibernate在何时释放JDBC连接 -->
+				<!-- hibernate.connection.release_mode=auto -->
+				<!-- 创建session方式hibrenate4的方式 -->
+				hibernate.current_session_context_class=org.springframework.orm.hibernate4.SpringSessionContext
+			</value>
+		</property>
+		<!-- xml实体映射使用 -->
+		<property name="mappingLocations">
+			<value>classpath*:/com/test/entity/*.hbm.xml</value>
+		</property>
+	</bean>
+	<!-- 启动对事务注解的支持 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 定义事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 事务的执行方式 -->
+		<tx:attributes>
+			<tx:method name="create*" propagation="REQUIRED"/>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="remove*" propagation="REQUIRED"/>
+			<tx:method name="del*" propagation="REQUIRED"/>
+			<tx:method name="next*" propagation="REQUIRED"/>
+			<tx:method name="import*" propagation="REQUIRED"/>
+			<tx:method name="insert*" read-only="false" propagation="REQUIRED"/>
+			<!-- read-only="true"表示只读 -->
+			<tx:method name="get*" propagation="NOT_SUPPORTED"/>
+			<tx:method name="find*" propagation="NOT_SUPPORTED"/>
+		</tx:attributes>
+	</tx:advice>
+		
+		<!-- 定义切面，在 .service 中执行有关的hibernate session的事务操作 -->
+	<aop:config>
+		<aop:pointcut id="serviceOperation"
+			expression="execution(* com.test.service.*.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+	</aop:config>
+		
+		
+	<!-- 会自动注册validator ConversionService -->
+	<mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
+
+	<!-- 注册HandlerMapper、HandlerAdapter两个映射类 激活@Controller模式 -->
+	<mvc:annotation-driven />
+	<!-- 定义 Autowired 自动注入 bean -->
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	
+	<!-- 访问静态资源 -->
+	<mvc:default-servlet-handler />
+
+	<!-- spring-context.jar 以下validator ConversionService在使用mvc:annotation-driven会自动注册 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<!-- 如果不加默认到classpath下的ValidationMessages.properties -->
+		<property name="validationMessageSource" ref="messageSource"></property>
+	</bean>
+	<bean id="conversion-service"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>classpath:ValidationMessages</value>
+			</list>
+		</property>
+
+	</bean>
+
+	<!-- 视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+</beans>
