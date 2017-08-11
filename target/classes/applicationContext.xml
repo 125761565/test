@@ -16,7 +16,8 @@
 
 	<!-- 配置扫描的包,完成Bean创建和自动依赖注入的功能 -->
 	<context:component-scan base-package="com.test.*" />
-
+	<!-- 开启切面编程 -->
+	<aop:aspectj-autoproxy proxy-target-class="false"/>
 	<!-- 引入配置文件 -->
 	<context:property-placeholder location="classpath*:*.properties" />
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -164,6 +165,6 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
-	</bean>
-
+	</bean>	
+	
 </beans>
