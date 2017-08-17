@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	 xmlns:aop="http://www.springframework.org/schema/aop" 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/context 
@@ -11,13 +11,13 @@
        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
         http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-          http://www.springframework.org/schema/mvc
+          http://www.springframework.org/schema/mvc          
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<!-- 配置扫描的包,完成Bean创建和自动依赖注入的功能 -->
 	<context:component-scan base-package="com.test.*" />
 	<!-- 开启切面编程 -->
-	<aop:aspectj-autoproxy proxy-target-class="false"/>
+	<aop:aspectj-autoproxy proxy-target-class="false" />
 	<!-- 引入配置文件 -->
 	<context:property-placeholder location="classpath*:*.properties" />
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -81,7 +81,7 @@
 				<!-- 数据库批量更新、添加、删除操作最大数 -->
 				hibernate.jdbc.batch_size=50
 				<!-- 是否自动提交事务 -->
-				<!--  hibernate.connection.autocommit=false  -->
+				<!-- hibernate.connection.autocommit=false -->
 				<!-- 指定hibernate在何时释放JDBC连接 -->
 				<!-- hibernate.connection.release_mode=auto -->
 				<!-- 创建session方式hibrenate4的方式 -->
@@ -105,39 +105,39 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<!-- 事务的执行方式 -->
 		<tx:attributes>
-			<tx:method name="create*" propagation="REQUIRED"/>
-			<tx:method name="save*" propagation="REQUIRED"/>
-			<tx:method name="add*" propagation="REQUIRED"/>
-			<tx:method name="update*" propagation="REQUIRED"/>
-			<tx:method name="remove*" propagation="REQUIRED"/>
-			<tx:method name="del*" propagation="REQUIRED"/>
-			<tx:method name="next*" propagation="REQUIRED"/>
-			<tx:method name="import*" propagation="REQUIRED"/>
-			<tx:method name="insert*" read-only="false" propagation="REQUIRED"/>
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="next*" propagation="REQUIRED" />
+			<tx:method name="import*" propagation="REQUIRED" />
+			<tx:method name="insert*" read-only="false" propagation="REQUIRED" />
 			<!-- read-only="true"表示只读 -->
-			<tx:method name="get*" propagation="NOT_SUPPORTED"/>
-			<tx:method name="find*" propagation="NOT_SUPPORTED"/>
+			<tx:method name="get*" propagation="NOT_SUPPORTED" />
+			<tx:method name="find*" propagation="NOT_SUPPORTED" />
 		</tx:attributes>
 	</tx:advice>
-		
-		<!-- 定义切面，在 .service 中执行有关的hibernate session的事务操作 -->
+
+	<!-- 定义切面，在 .service 中执行有关的hibernate session的事务操作 -->
 	<aop:config>
 		<aop:pointcut id="serviceOperation"
 			expression="execution(* com.test.service.*.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
-		
-		
+
+
 	<!-- 会自动注册validator ConversionService -->
-	<mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
+	<mvc:annotation-driven validator="validator"
+		conversion-service="conversion-service" />
 
 	<!-- 注册HandlerMapper、HandlerAdapter两个映射类 激活@Controller模式 -->
 	<mvc:annotation-driven />
 	<!-- 定义 Autowired 自动注入 bean -->
-	<bean
-		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
-	
+
 	<!-- 访问静态资源 -->
 	<mvc:default-servlet-handler />
 
@@ -159,12 +159,12 @@
 		</property>
 
 	</bean>
-
+	
 	<!-- 视图解析器 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
-	</bean>	
-	
+	</bean>
+
 </beans>

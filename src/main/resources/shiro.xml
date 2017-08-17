@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util 
+       http://www.springframework.org/schema/util/spring-util.xsd">
+	<!-- shiro -->
+	<!-- 注册自定义realm -->
+	<bean id="bosRealm" class="com.test.shiro.BOSRealm" />
+
+	<!-- 定义缓存管理器 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<!-- session的失效时长，单位毫秒 -->
+		<property name="globalSessionTimeout" value="600000" />
+		<!-- 删除失效的session -->
+		<property name="deleteInvalidSessions" value="true" />
+	</bean>
+
+
+	<!-- 注册安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 注入realm -->
+		<property name="realm" ref="bosRealm" />
+		<!-- 使用配置的缓存管理器 -->
+		<property name="cacheManager" ref="cacheManager"></property>
+		<!-- 会话管理 -->
+		<property name="sessionManager" ref="sessionManager" />
+	</bean>
+	<!-- 配置ShiroFilter -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 注入安全管理器 -->
+		<property name="securityManager" ref="securityManager" />
+		<!-- 注入系统登录页面 -->
+		<property name="loginUrl" value="/jsp/login.jsp" />
+		<!-- 注入成功页面 -->
+		<property name="successUrl" value="/jsp/demo.jsp"></property>
+		<!-- 注入权限不足提示页面 -->
+		<property name="unauthorizedUrl" value="/jsp/unauthorizedUrl.jsp" />
+		<!-- URL拦截规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/login=anon
+				/pcrimg=anon
+				/index=anon
+				/css/**=anon
+				/js/**=anon
+				/img/**=anon
+				/login.jsp*=anon
+				/validatecode.jsp*=anon
+				/** =authc
+			</value>
+
+		</property>
+	</bean>
+	 <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
+	<!-- shiro -->
+
+</beans>

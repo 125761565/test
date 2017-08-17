@@ -10,7 +10,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.test.dao.IUserDao;
 import com.test.entity.Goods;
+import com.test.entity.User;
 import com.test.service.GoodsService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:applicationContext.xml" })
@@ -18,6 +20,8 @@ import com.test.service.GoodsService;
 public class GoodsTest {
 	@Autowired
 	private GoodsService goodsService;
+	@Autowired
+	private IUserDao userDao;
 	
 	@org.junit.Test
 	public void getList() {
@@ -59,6 +63,14 @@ public class GoodsTest {
 		 goods.setId("1");
 		 goods.setName("水浒");
 		 System.out.println(goodsService.updateEntity(goods));
+	 }
+	 
+	 
+	 @Test
+	 public void getUser() {
+		 System.out.println("====================");
+		 User user=userDao.findUserByUsername("zhang");
+		 System.out.println(user.getPassword());
 	 }
 
 }

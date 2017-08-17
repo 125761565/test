@@ -37,7 +37,7 @@ label.error {
 		
 				<div style="height: 50px;">用户名:<input type="text" name="username"  value="zhang"/></div>
 			
-				<div style="height: 50px;">密码:<input type="password" name="password"  value="123"/></div>
+				<div style="height: 50px;">密码:<input type="password" name="password"  value="123456"/></div>
 			
 			
 				<div >

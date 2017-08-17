@@ -17,6 +17,9 @@ import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
+import com.test.entity.User;
+import com.test.entity.Permission;
+
 /***
  * hibernate基础实现类 单表的增删改查 多表联合查询
  * 
@@ -141,6 +144,47 @@ public class BaseDao<T> extends HibernateDaoSupport {
 				return list;
 			}
 
+		});
+	}
+
+	public List<Permission> findAllByHQL(String string, String...  args) {
+		
+		return (List<Permission>) this.getHibernateTemplate().execute(new HibernateCallback<List<Permission>>() {
+
+			@Override
+			public List<Permission> doInHibernate(Session session) throws HibernateException {
+				Query query=session.createQuery(string);
+				if(null!=args) {
+					for(int i=0;i<args.length;i++) {
+						query.setString(i, args[i]);
+					}
+				}
+				@SuppressWarnings("unchecked")
+				List<Permission> list=query.list();
+				return list;
+			}
+			
+		});
+	}
+
+	public User findObjectByHQL(String string, String... args) {
+		
+		return this.getHibernateTemplate().execute(new HibernateCallback<User>() {
+
+			@Override
+			public User doInHibernate(Session session) throws HibernateException {
+				Query query=session.createQuery(string);
+				if(null!=args) {
+					for(int i=0;i<args.length;i++) {
+						query.setString(i, args[i]);
+					}
+				}
+				@SuppressWarnings("unchecked")
+				List<User> list=query.list();
+				
+				return CollectionUtils.isEmpty(list)?null:list.get(0);
+			}
+			
 		});
 	}
 

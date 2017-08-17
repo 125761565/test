@@ -1,9 +1,17 @@
 package com.test.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.alibaba.druid.pool.GetConnectionTimeoutException;
 import com.github.bingoohuang.patchca.color.ColorFactory;
 import com.github.bingoohuang.patchca.color.SingleColorFactory;
 import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
@@ -14,7 +22,9 @@ import com.github.bingoohuang.patchca.filter.predefined.MarbleRippleFilterFactor
 import com.github.bingoohuang.patchca.filter.predefined.WobbleRippleFilterFactory;
 import com.github.bingoohuang.patchca.utils.encoder.EncoderHelper;
 import com.github.bingoohuang.patchca.word.RandomWordFactory;
-import com.test.pojo.User;
+import com.test.entity.User;
+import com.test.service.IUserService;
+import com.test.util.MD5Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +42,9 @@ import java.util.Random;
  */
 @Controller
 public class LoginController {
+	@Autowired
+	private IUserService userService;
+	
 	// 验证码处理器工厂
 	private static ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
 	private static Random random = new Random();
@@ -77,27 +90,49 @@ public class LoginController {
 	@RequestMapping(value="/index",method=RequestMethod.POST)
 	public String loginPost(HttpServletRequest request,String username,String password,Model model,String authcode ){		
 		HttpSession session=request.getSession();
-		try {
-			if("zhang".equals(username)&&"123".equals(password)&&code.equalsIgnoreCase(authcode)) {
-				
-				//return "redirect:/index";
-				User user =new User();
-				user.setName(username);
-				user.setPassword(password);
-				model.addAttribute("username", "张三");
-				return "demo";
-			}else {
-				
-				return "login"; 
-			}	    		
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("error", "用户名或密码有误！");
+		//从session中获取验证码
+		String key=(String) session.getAttribute("captchaToken");
+		User user=userService.findUserByUsername(username);
+		//判断用户输入的验证码是否正确
+		if(authcode.equalsIgnoreCase(key)&&user!=null) {
+			//获得当前用户 状态为未认证
+			Subject subject=SecurityUtils.getSubject();			
+			UsernamePasswordToken token=new UsernamePasswordToken(user.getUsername(),password);
+			try {
+				subject.login(token);				
+			} catch (UnknownAccountException e) {//用户名不存在异常
+				e.printStackTrace();
+				this.addActionError(getText("usernameNotExist"));
+				return "login";
+			}catch (IncorrectCredentialsException e) {//密码不正确异常
+				e.printStackTrace();
+				this.addActionError(getText("loginError"));
+				return "login";
+			}
+			;
+			model.addAttribute("user",  subject.getPrincipal());
+			session.setAttribute("loginUser",  subject.getPrincipal());
+			return "demo";
+		}else {
+			//验证码错误
+			this.addActionError(this.getText("checkcodeError"));
 			return "login";
-		}
+		}		
 	}
 	
 		
+	private void addActionError(Object text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private Object getText(String string) {
+		
+		return string;
+	}
+
+
 	@RequestMapping("/pcrimg")
     public void crimg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         switch (random.nextInt(5)) {

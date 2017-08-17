@@ -32,7 +32,7 @@ h1 {
 </style>
 </head>
 <body>
-	<h1>欢迎${username}</h1>
+	<h1>欢迎${user.username}</h1>
 	<form id="myForm" action="" method="post"   enctype="application/x-www-form-urlencoded">
 		
 		书名：<input type="text" id="name" name="name"></input><br />
