@@ -187,5 +187,36 @@ public class BaseDao<T> extends HibernateDaoSupport {
 			
 		});
 	}
+	
+	/*****
+	 * 单列查询
+	 * @param entityName
+	 * @param columnName
+	 * @param columnValue
+	 * @return
+	 */
+	protected List<T> getListByColumn(final String entityName,final String columnName,final String columnValue){
+		String hql=" from "+entityName+" where "+columnName+"=?";
+		return this.getListByHql(hql,columnValue);
+	}
+
+	protected List<T> getListByHql(final String hql, final String... args) {
+		
+		return  this.getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
+			@Override
+			public List<T> doInHibernate(Session session) throws HibernateException {
+				Query query=session.createQuery(hql);
+				if(null!=args) {
+					for(int i=0;i<args.length;i++) {
+						query.setString(i, args[i]);
+					}
+				}
+					@SuppressWarnings("unchecked")
+					List<T> list=query.list();
+					return list;				
+			}
+			
+		});
+	}
 
 }

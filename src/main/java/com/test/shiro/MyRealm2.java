@@ -13,14 +13,14 @@ import org.apache.shiro.realm.Realm;
  * @author Administrator
  *
  */
-public class MyRealm1 implements Realm {
+public class MyRealm2 implements Realm {
 	/***
 	 * 返回一个唯一的Realm名字
 	 */
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "myrealm1";
+		return "myrealm2";
 	}
 	/****
 	 * 判断此Realm是否支持此Token
