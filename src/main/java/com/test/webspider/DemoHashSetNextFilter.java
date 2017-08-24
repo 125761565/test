@@ -1,4 +1,4 @@
-package com.test.spider.webcollector;
+package com.test.webspider;
 
 import cn.edu.hfut.dmic.contentextractor.ContentExtractor;
 import cn.edu.hfut.dmic.webcollector.model.CrawlDatums;
