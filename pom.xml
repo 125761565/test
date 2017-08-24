@@ -16,6 +16,7 @@
 		<slf4j.version>1.7.21</slf4j.version>
 		<junit.version>4.12</junit.version>
 		<log4j.version>1.2.17</log4j.version>
+		<jackson.version>1.9.13</jackson.version>
 	</properties>
 	<dependencies>
 		<!-- servlet jar -->
@@ -317,7 +318,7 @@
 			<version>2.70</version>
 		</dependency>
 		<!-- js爬取 -->
-		
+
 		<!-- nutch -->
 		<dependency>
 			<groupId>org.apache.nutch</groupId>
@@ -329,6 +330,33 @@
 			<artifactId>jedis</artifactId>
 			<version>2.9.0</version>
 		</dependency>
+		<!-- json -->
+		<!-- <dependency> <groupId>com.google.code.gson</groupId> <artifactId>gson</artifactId> 
+			<version>2.3</version> </dependency> <dependency> <groupId>com.fasterxml.jackson.core</groupId> 
+			<artifactId>jackson-databind</artifactId> <version>2.8.3</version> </dependency> 
+			<dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-core-asl</artifactId> 
+			<version>${jackson.version}</version> </dependency> <dependency> <groupId>org.codehaus.jackson</groupId> 
+			<artifactId>jackson-mapper-asl</artifactId> <version>${jackson.version}</version> 
+			</dependency> <dependency> <groupId>net.sf.json-lib</groupId> <artifactId>json-lib</artifactId> 
+			<version>2.4</version> <classifier>jdk13</classifier> </dependency> <dependency> 
+			<groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> <version>1.2.6</version> 
+			</dependency> <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
+			<version>1.6.1</version> </dependency> <dependency> <groupId>org.jdom</groupId> 
+			<artifactId>jdom</artifactId> <version>1.1</version> </dependency> -->
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+		<!--文件的读写 -->
+		<dependency>
+			<groupId>net.sourceforge.javacsv</groupId>
+			<artifactId>javacsv</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 </project>

@@ -74,6 +74,7 @@ public class DemoImageCrawler extends BreadthCrawler {
         demoImageCrawler.setRequester(new OkHttpRequester());
         //设置为断点爬取，否则每次开启爬虫都会重新爬取
         demoImageCrawler.setResumable(true);
+        demoImageCrawler.setMaxExecuteCount(10);
         demoImageCrawler.start(3);
     }
 }
