@@ -1,6 +1,6 @@
     <%@ page language="java" contentType="text/html; charset=utf-8"
              pageEncoding="utf-8"%>
-        <%@ page import="com.baidu.ueditor.um.Uploader" %>
+      <%--   <%@ page import="com.baidu.ueditor.um.Uploader" %>
 
             <%
     request.setCharacterEncoding("utf-8");
@@ -24,3 +24,4 @@
         response.getWriter().print("<script>"+ callback +"(" + result + ")</script>");
     }
     %>
+ --%>

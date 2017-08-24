@@ -317,14 +317,13 @@
 			<version>2.70</version>
 		</dependency>
 		<!-- js爬取 -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>3.4.0</version>
-		</dependency>
+		
 		<!-- nutch -->
-		<!-- <dependency> <groupId>org.apache.nutch</groupId> <artifactId>nutch</artifactId> 
-			<version>2.3.1</version> </dependency> -->
+		<dependency>
+			<groupId>org.apache.nutch</groupId>
+			<artifactId>nutch</artifactId>
+			<version>2.3.1</version>
+		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
