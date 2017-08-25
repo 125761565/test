@@ -7,7 +7,9 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath*:applicationContext.xml
-         classpath*:shiro.xml</param-value>
+         classpath*:shiro.xml
+         classpath*:quartz.xml
+         </param-value>
     </context-param>
     
     <!-- 防止发生java.beans.Introspector内存泄露,应将它配置在ContextLoaderListener的前面 -->

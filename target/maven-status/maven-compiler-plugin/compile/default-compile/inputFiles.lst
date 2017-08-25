@@ -15,6 +15,7 @@ F:\Users\Administrator\git\test\src\main\java\com\test\dao\IUserRoleDao.java
 F:\Users\Administrator\git\test\src\main\java\com\test\spider\simple\UrlDataHanding.java
 F:\Users\Administrator\git\test\src\main\java\com\test\util\CaseMode.java
 F:\Users\Administrator\git\test\src\main\java\com\test\webspider\Spider.java
+F:\Users\Administrator\git\test\src\main\java\com\test\quartz\Quartztest.java
 F:\Users\Administrator\git\test\src\main\java\com\test\webspider\DemoTypeCrawler.java
 F:\Users\Administrator\git\test\src\main\java\com\test\spider\CrawlUrl.java
 F:\Users\Administrator\git\test\src\main\java\com\test\spider\simple\login\RTest.java
@@ -61,6 +62,7 @@ F:\Users\Administrator\git\test\src\main\java\com\test\spider\MyCrawler.java
 F:\Users\Administrator\git\test\src\main\java\com\test\service\impl\GoodsServiceImpl.java
 F:\Users\Administrator\git\test\src\main\java\com\test\webspider\NewsCrawler.java
 F:\Users\Administrator\git\test\src\main\java\com\test\dao\impl\BabyPerson.java
+F:\Users\Administrator\git\test\src\main\java\com\test\quartz\JobDetailBean.java
 F:\Users\Administrator\git\test\src\main\java\com\test\spider\bloomFilter\VisitedFrontier.java
 F:\Users\Administrator\git\test\src\main\java\com\test\shiro\CustomRealm.java
 F:\Users\Administrator\git\test\src\main\java\com\test\aspectj\HelloWorld.java
@@ -80,6 +82,7 @@ F:\Users\Administrator\git\test\src\main\java\com\test\spider\Spider.java
 F:\Users\Administrator\git\test\src\main\java\com\test\aspectj\AdivceMethod.java
 F:\Users\Administrator\git\test\src\main\java\com\test\dao\impl\UserRoleDaoImpl.java
 F:\Users\Administrator\git\test\src\main\java\com\test\spider\DownLoadFile.java
+F:\Users\Administrator\git\test\src\main\java\com\test\quartz\DemoJob.java
 F:\Users\Administrator\git\test\src\main\java\com\test\shiro\MyRealm2.java
 F:\Users\Administrator\git\test\src\main\java\com\test\spider\simple\login\HelloWorld.java
 F:\Users\Administrator\git\test\src\main\java\com\test\dao\Person.java
